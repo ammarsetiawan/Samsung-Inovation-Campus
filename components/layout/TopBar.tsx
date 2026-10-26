@@ -44,8 +44,8 @@ export function TopBar({
             </svg>
           </div>
           <div className={styles.logoText}>
-            <span className={styles.logoTitle}>SIC IOT TELEMETRY</span>
-            <span className={styles.logoSub}>SMART OFFICE VISUALIZER</span>
+            <span className={styles.logoTitle}>SMART ROOM</span>
+            <span className={styles.logoSub}>SMART ROOM MONITORING</span>
           </div>
         </div>
         <div className={styles.separator} />
