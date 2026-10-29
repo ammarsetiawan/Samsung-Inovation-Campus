@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SIC IoT Dashboard : Tactical Monitoring System",
+  title: "SMART ROOM MONITORING SYSTEM",
   description:
     "Real-time IoT sensor monitoring dashboard with tactical visualization. Track temperature, humidity, pressure, and environmental data across distributed sensor clusters.",
 };

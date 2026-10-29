@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
-  allowedDevOrigins: ["192.168.15.7", "localhost", "127.0.0.1"],
+  allowedDevOrigins: ["[IP_ADDRESS]","192.168.15.7", "localhost", "127.0.0.1"],
   turbopack: {
     rules: {
       "*.css": {
