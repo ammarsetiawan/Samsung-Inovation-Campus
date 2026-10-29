@@ -51,7 +51,7 @@ export const INITIAL_LOGS: LogEntry[] = [
   {
     time: "INIT",
     node: "MQTT",
-    message: "Connecting to wss://broker.emqx.io:8084/mqtt",
+    message: "Connecting to wss://broker.hivemq.com:8884/mqtt",
     level: "info",
   },
   {

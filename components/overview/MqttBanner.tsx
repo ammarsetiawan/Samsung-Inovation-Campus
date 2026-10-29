@@ -99,13 +99,13 @@ export function MqttBanner({
         <div className={styles.mqttDrawer}>
           <div className={styles.mqttConfigBox}>
             <div className={styles.mqttInputGroup}>
-              <label className={styles.mqttInputLabel}>EMQX BROKER WSS URL</label>
+              <label className={styles.mqttInputLabel}>HIVEMQ BROKER WSS URL</label>
               <input
                 type="text"
                 value={brokerUrl}
                 onChange={(e) => setBrokerUrl(e.target.value)}
                 className={styles.mqttInput}
-                placeholder="wss://broker.emqx.io:8084/mqtt"
+                placeholder="wss://broker.hivemq.com:8884/mqtt"
               />
             </div>
 

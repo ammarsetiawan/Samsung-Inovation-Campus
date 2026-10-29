@@ -41,7 +41,7 @@ export default function Dashboard() {
   const [mounted, setMounted] = useState(false);
 
   // MQTT States
-  const [brokerUrl, setBrokerUrl] = useState("wss://broker.emqx.io:8084/mqtt");
+  const [brokerUrl, setBrokerUrl] = useState("wss://broker.hivemq.com:8884/mqtt");
   const [topicControl, setTopicControl] = useState("JASUN/smart-office/control");
   const [activeTopic, setActiveTopic] = useState("JASUN/smart-office/monitors");
   const [mqttStatus, setMqttStatus] = useState<MqttStatus>("connecting");
