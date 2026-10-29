@@ -51,6 +51,8 @@ export default function Dashboard() {
   const [sessionSeconds, setSessionSeconds] = useState(0);
   const [topicInput, setTopicInput] = useState("JASUN/smart-office/monitors");
   const [publishFeedback, setPublishFeedback] = useState<string | null>(null);
+  // True setelah menerima minimal 1 paket telemetri dari sensor ESP32
+  const [hasReceivedData, setHasReceivedData] = useState(false);
 
   // Real-time Actuators / Relays from ESP32 payload
   const [actuators, setActuators] = useState<ActuatorState>({ lamp: false, fan: false, alarm: false });
@@ -71,7 +73,7 @@ export default function Dashboard() {
 
   // Telemetry stream history for the live chart
   const [history, setHistory] = useState<HistoryPoint[]>([
-    { time: "00:00", temp: 28.0, hum: 65.0, light: 1295 },
+    { time: "00:00", temp: 0, hum: 0, light: 0 },
   ]);
 
   const clientRef = useRef<MqttClient | null>(null);
@@ -398,6 +400,7 @@ export default function Dashboard() {
           extractedLight !== undefined;
 
         if (hasUpdate) {
+          setHasReceivedData(true);
           setSensors((prev) =>
             prev.map((s) => {
               let updatedVal = s.value;
@@ -639,24 +642,14 @@ export default function Dashboard() {
     try {
       sessionStorage.removeItem("sic-intro-seen");
       document.documentElement.dataset.intro = "pending";
-    } catch {}
+    } catch { }
     window.location.reload();
   }, []);
 
   return (
     <div className={styles.dashboardRoot}>
       {/* ═══ TACTICAL BOOT SEQUENCE TRANSITION PRELOADER ═══ */}
-      <Preloader
-        words={[
-          "INITIALIZING ESP32 NODE-01",
-          "CALIBRATING SENSORS",
-          "MQTT TELEMETRY HANDSHAKE",
-          "TACTICAL HUD ONLINE",
-        ]}
-        brand="SIC // TACTICAL MONITOR"
-        sector="SECTOR 08 -- CLUSTER EU-W1"
-        duration={2.6}
-      />
+      <Preloader />
 
       <GridBackground />
 
@@ -665,6 +658,7 @@ export default function Dashboard() {
         currentTime={currentTime}
         latency={latency}
         mqttStatus={mqttStatus}
+        hasReceivedData={hasReceivedData}
         activeTopic={activeTopic}
         onReplayIntro={handleReplayIntro}
       />
@@ -698,7 +692,7 @@ export default function Dashboard() {
         />
 
         {/* ─── 4 CORE SENSORS (FROM HARDWARE PAYLOAD) ─── */}
-        <SensorGrid sensors={sensors} mounted={mounted} />
+        <SensorGrid sensors={sensors} mounted={mounted} hasReceivedData={hasReceivedData} />
 
         {/* ─── SMART OFFICE ACTUATORS / RELAYS TELEMETRY ─── */}
         <ActuatorGrid

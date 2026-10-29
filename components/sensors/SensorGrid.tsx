@@ -8,9 +8,11 @@ import type { SensorData } from "@/types/dashboard";
 interface SensorGridProps {
   sensors: SensorData[];
   mounted: boolean;
+  /** True jika sudah ada minimal 1 paket telemetri diterima dari ESP32 */
+  hasReceivedData?: boolean;
 }
 
-export function SensorGrid({ sensors, mounted }: SensorGridProps) {
+export function SensorGrid({ sensors, mounted, hasReceivedData = false }: SensorGridProps) {
   const tempSensor = sensors.find((s) => s.id === "temp-01");
   const humSensor = sensors.find((s) => s.id === "hum-01");
   const presenceSensor = sensors.find((s) => s.id === "presence-01");
@@ -54,37 +56,31 @@ export function SensorGrid({ sensors, mounted }: SensorGridProps) {
               className={styles.sensorStatus}
               style={{
                 color:
-                  currentTemp > 35
-                    ? "var(--status-critical)"
-                    : currentTemp > 28
-                      ? "var(--primary)"
-                      : "var(--status-online)",
+                  !hasReceivedData || tempSensor?.status === "offline" ? "var(--text-muted)"
+                  : currentTemp > 35 ? "var(--status-critical)"
+                    : currentTemp > 28 ? "var(--primary)" : "var(--status-online)",
                 borderColor:
-                  currentTemp > 35
-                    ? "var(--status-critical)"
-                    : currentTemp > 28
-                      ? "var(--primary)"
-                      : "var(--status-online)",
+                  !hasReceivedData || tempSensor?.status === "offline" ? "var(--border)"
+                  : currentTemp > 35 ? "var(--status-critical)"
+                    : currentTemp > 28 ? "var(--primary)" : "var(--status-online)",
                 background:
-                  currentTemp > 35
-                    ? "rgba(255,82,82,0.1)"
-                    : currentTemp > 28
-                      ? "rgba(255,171,0,0.1)"
-                      : "rgba(0,230,118,0.1)",
+                  !hasReceivedData || tempSensor?.status === "offline" ? "rgba(255,255,255,0.02)"
+                  : currentTemp > 35 ? "rgba(255,82,82,0.1)"
+                    : currentTemp > 28 ? "rgba(255,171,0,0.1)" : "rgba(0,230,118,0.1)",
               }}
             >
               <span
                 className={styles.statusDotSmall}
                 style={{
                   background:
-                    currentTemp > 35
-                      ? "var(--status-critical)"
-                      : currentTemp > 28
-                        ? "var(--primary)"
-                        : "var(--status-online)",
+                    !hasReceivedData || tempSensor?.status === "offline" ? "var(--text-muted)"
+                    : currentTemp > 35 ? "var(--status-critical)"
+                      : currentTemp > 28 ? "var(--primary)" : "var(--status-online)",
                 }}
               />
-              {currentTemp > 35 ? "CRITICAL HEAT" : currentTemp > 28 ? "WARM" : "OPTIMAL"}
+              {!hasReceivedData || tempSensor?.status === "offline"
+                ? "AWAITING DATA"
+                : currentTemp > 35 ? "CRITICAL HEAT" : currentTemp > 28 ? "WARM" : "OPTIMAL"}
             </span>
           </div>
 
@@ -137,30 +133,28 @@ export function SensorGrid({ sensors, mounted }: SensorGridProps) {
               className={styles.sensorStatus}
               style={{
                 color:
-                  currentHum > 75
-                    ? "var(--status-warning)"
-                    : currentHum < 40
-                      ? "var(--primary)"
-                      : "var(--status-online)",
+                  !hasReceivedData || humSensor?.status === "offline" ? "var(--text-muted)"
+                  : currentHum > 75 ? "var(--status-warning)"
+                    : currentHum < 40 ? "var(--primary)" : "var(--status-online)",
                 borderColor:
-                  currentHum > 75
-                    ? "var(--status-warning)"
-                    : currentHum < 40
-                      ? "var(--primary)"
-                      : "var(--status-online)",
+                  !hasReceivedData || humSensor?.status === "offline" ? "var(--border)"
+                  : currentHum > 75 ? "var(--status-warning)"
+                    : currentHum < 40 ? "var(--primary)" : "var(--status-online)",
                 background:
-                  currentHum > 75
-                    ? "rgba(255,171,0,0.1)"
-                    : "rgba(0,230,118,0.1)",
+                  !hasReceivedData || humSensor?.status === "offline" ? "rgba(255,255,255,0.02)"
+                  : currentHum > 75 ? "rgba(255,171,0,0.1)" : "rgba(0,230,118,0.1)",
               }}
             >
               <span
                 className={styles.statusDotSmall}
                 style={{
-                  background: currentHum > 75 ? "var(--status-warning)" : "var(--status-online)",
+                  background: !hasReceivedData || humSensor?.status === "offline" ? "var(--text-muted)"
+                    : currentHum > 75 ? "var(--status-warning)" : "var(--status-online)",
                 }}
               />
-              {currentHum > 75 ? "HIGH MOISTURE" : currentHum < 40 ? "DRY AIR" : "COMFORTABLE"}
+              {!hasReceivedData || humSensor?.status === "offline"
+                ? "AWAITING DATA"
+                : currentHum > 75 ? "HIGH MOISTURE" : currentHum < 40 ? "DRY AIR" : "COMFORTABLE"}
             </span>
           </div>
 
@@ -293,18 +287,18 @@ export function SensorGrid({ sensors, mounted }: SensorGridProps) {
             <span
               className={styles.sensorStatus}
               style={{
-                color: currentLight > 2500 ? "var(--primary)" : "var(--text-secondary)",
-                borderColor: currentLight > 2500 ? "var(--primary)" : "var(--border)",
-                background: currentLight > 2500 ? "rgba(255,171,0,0.12)" : "rgba(255,255,255,0.02)",
+                color: !hasReceivedData || lightSensor?.status === "offline" ? "var(--text-muted)" : currentLight > 2500 ? "var(--primary)" : "var(--text-secondary)",
+                borderColor: !hasReceivedData || lightSensor?.status === "offline" ? "var(--border)" : currentLight > 2500 ? "var(--primary)" : "var(--border)",
+                background: !hasReceivedData || lightSensor?.status === "offline" ? "rgba(255,255,255,0.02)" : currentLight > 2500 ? "rgba(255,171,0,0.12)" : "rgba(255,255,255,0.02)",
               }}
             >
               <span
                 className={styles.statusDotSmall}
                 style={{
-                  background: currentLight > 2500 ? "var(--primary)" : "var(--text-muted)",
+                  background: !hasReceivedData || lightSensor?.status === "offline" ? "var(--text-muted)" : currentLight > 2500 ? "var(--primary)" : "var(--text-muted)",
                 }}
               />
-              {getLightDescription(currentLight)}
+              {!hasReceivedData || lightSensor?.status === "offline" ? "AWAITING DATA" : getLightDescription(currentLight)}
             </span>
           </div>
 

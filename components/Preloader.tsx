@@ -25,7 +25,7 @@ export type PreloaderProps = {
 export default function Preloader({
   words = [
     "AHMED",
-    "TAKY",
+    "TAQY",
     "AMMAR",
     "FURQON",
   ],
@@ -70,7 +70,7 @@ export default function Preloader({
       const finish = () => {
         try {
           sessionStorage.setItem(STORAGE_KEY, "1");
-        } catch {}
+        } catch { }
         html.style.overflow = "";
         html.dataset.intro = "done";
         window.dispatchEvent(new Event("intro:complete"));

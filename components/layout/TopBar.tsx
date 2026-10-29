@@ -10,12 +10,15 @@ interface TopBarProps {
   mqttStatus: MqttStatus;
   activeTopic: string;
   onReplayIntro?: () => void;
+  /** True jika sudah ada minimal 1 paket telemetri diterima dari ESP32 */
+  hasReceivedData?: boolean;
 }
 
 export function TopBar({
   currentTime,
   latency,
   mqttStatus,
+  hasReceivedData = false,
   activeTopic,
   onReplayIntro,
 }: TopBarProps) {
@@ -83,7 +86,10 @@ export function TopBar({
             }}
           />
           <Radio size={11} strokeWidth={2.2} style={{ marginRight: 2 }} />
-          MQTT / {mqttStatus.toUpperCase()}
+          MQTT /{` `}
+          {mqttStatus === "connected"
+            ? hasReceivedData ? "LIVE" : "STANDBY"
+            : mqttStatus.toUpperCase()}
         </div>
 
         <div className={styles.statusPill}>
