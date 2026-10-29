@@ -1,6 +1,6 @@
 "use client";
 
-import { Radio, Activity } from "lucide-react";
+import { Radio, Activity, RotateCcw } from "lucide-react";
 import { styles } from "@/lib/styles";
 import type { MqttStatus } from "@/types/dashboard";
 
@@ -9,6 +9,7 @@ interface TopBarProps {
   latency: number;
   mqttStatus: MqttStatus;
   activeTopic: string;
+  onReplayIntro?: () => void;
 }
 
 export function TopBar({
@@ -16,6 +17,7 @@ export function TopBar({
   latency,
   mqttStatus,
   activeTopic,
+  onReplayIntro,
 }: TopBarProps) {
   return (
     <header className={styles.topBar}>
@@ -91,6 +93,17 @@ export function TopBar({
         </div>
 
         <div className={styles.timeBadge}>{currentTime}</div>
+
+        {onReplayIntro && (
+          <button
+            onClick={onReplayIntro}
+            title="Ulangi animasi transisi boot sequence"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#0F1A24] border border-[#FFAB00]/30 hover:border-[#FFAB00] text-[#FFAB00] text-[10px] font-mono tracking-wider transition-all hover:bg-[#FFAB00]/10 hover:shadow-[0_0_10px_rgba(255,171,0,0.2)] active:scale-95 cursor-pointer"
+          >
+            <RotateCcw size={11} />
+            <span className="hidden sm:inline">TRANSISI</span>
+          </button>
+        )}
       </div>
     </header>
   );

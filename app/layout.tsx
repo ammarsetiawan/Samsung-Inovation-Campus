@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     "Real-time IoT sensor monitoring dashboard with tactical visualization. Track temperature, humidity, pressure, and environmental data across distributed sensor clusters.",
 };
 
+// Skrip dijalankan sebelum paint: jika intro sudah dilihat dalam sesi ini, pasang dataset.intro='seen'
+const introGuard = `try{if(sessionStorage.getItem("sic-intro-seen"))document.documentElement.dataset.intro="seen"}catch(e){}`;
+
 export default function RootLayout({
   children,
 }: {
@@ -28,8 +31,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`h-full antialiased ${rajdhani.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introGuard }} />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

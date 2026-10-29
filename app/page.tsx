@@ -27,6 +27,7 @@ import { SensorGrid } from "@/components/sensors/SensorGrid";
 import { ActuatorGrid } from "@/components/actuators/ActuatorGrid";
 import { TelemetrySection } from "@/components/telemetry/TelemetrySection";
 import { LogsSection } from "@/components/logs/LogsSection";
+import Preloader from "@/components/Preloader";
 
 /* ═══════════════════════════════════════════════════
    MAIN DASHBOARD COMPONENT
@@ -634,8 +635,29 @@ export default function Dashboard() {
     });
   }, [topicControl]);
 
+  const handleReplayIntro = useCallback(() => {
+    try {
+      sessionStorage.removeItem("sic-intro-seen");
+      document.documentElement.dataset.intro = "pending";
+    } catch {}
+    window.location.reload();
+  }, []);
+
   return (
     <div className={styles.dashboardRoot}>
+      {/* ═══ TACTICAL BOOT SEQUENCE TRANSITION PRELOADER ═══ */}
+      <Preloader
+        words={[
+          "INITIALIZING ESP32 NODE-01",
+          "CALIBRATING SENSORS",
+          "MQTT TELEMETRY HANDSHAKE",
+          "TACTICAL HUD ONLINE",
+        ]}
+        brand="SIC // TACTICAL MONITOR"
+        sector="SECTOR 08 -- CLUSTER EU-W1"
+        duration={2.6}
+      />
+
       <GridBackground />
 
       {/* ═══ TOP BAR ═══ */}
@@ -644,6 +666,7 @@ export default function Dashboard() {
         latency={latency}
         mqttStatus={mqttStatus}
         activeTopic={activeTopic}
+        onReplayIntro={handleReplayIntro}
       />
 
       {/* ═══ MAIN CONTENT ═══ */}

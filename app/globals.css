@@ -1670,3 +1670,9 @@ a:focus-visible {
     padding: 2px 7px !important;
   }
 }
+
+/* ═══ PRELOADER TACTICAL INTRO ═══ */
+html[data-intro="seen"] .preloader {
+  display: none !important;
+}
+
